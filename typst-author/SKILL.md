@@ -9,12 +9,27 @@ description: Generate idiomatic Typst (.typ) code, edit and troubleshoot Typst d
 
 This skill helps agents generate, edit, and reason about Typst documents. It provides quick‑start examples, detailed workflows, and links to the Typst documentation (overview, guides, tutorials, reference).
 
+## Portuguese Language Setup
+
+- Use `#set text(lang: "pt")` to enable Portuguese hyphenation and typographic rules.
+- Accented characters (á, é, í, ó, ú, ç, ã, õ) are supported natively in UTF-8 mode.
+- Portuguese quotation marks use guillemets: « and » (typed as ```` ` ```` and ```` ` ```` inside markup).
+- Use a decimal comma (`,`) for numbers in Portuguese text; use `#set number(decimal: ",")` to enforce this globally.
+- To type acute accents directly, use the UTF-8 character; Typst will render them correctly without additional escaping.
+
+## Bibliography and Citations
+
+- Use `#import "package:abnt"` or similar academic bibliography packages (e.g., `package:natbib`, `package:biblatex`) for ABNT or other citation styles.
+- Manage `.bib` files with `#include "references.bib"` to load bibliography entries.
+- Citation commands: `cite(key)` inserts a citation, `key(key)` returns the citation key text.
+- Bibliography generation: `#bibliography("references.bib")` loads the bibliography, and `#bib()` generates the bibliography list at the desired location.
+
 ## Minimal document example
 
 ```typst
-#set document(title: "My Document", author: "Author Name")
+#set document(title: "Documento Acadêmico", author: "Nome do Autor")
 #set page(numbering: "1")
-#set text(lang: "en")
+#set text(lang: "pt")
 
 // Enable paragraph justification and character-level justification
 #set par(
@@ -25,15 +40,62 @@ This skill helps agents generate, edit, and reason about Typst documents. It pro
   )
 )
 
-#title[My Document]
+#title[Documento Acadêmico]
 
-= Heading 1
+= Introdução
 
-This is a paragraph in Typst.
+Este é um parágrafo de exemplo em português. Aqui é demonstrado o uso da linguagem pt com acentos corretos como á, é, í, ó, ú, ç, ã, õ.
 
-== Heading 2
+= Métodos
 
-#lorem(50)
+Os métodos utilizados seguem as melhores práticas da pesquisa acadêmica.
+
+= Resultados
+
+Apresenta-se os resultados principais do estudo.
+
+= Conclusão
+
+Concluímos que os resultados são promissores.
+
+#lorem(50) → #bibliography("referencias.bib")
+```
+```
+
+## Example: Paper in Portuguese
+
+```typst
+#set document(title: "Um Estudo sobre Higiene Manual", author: "João Silva")
+#set page(numbering: "1")
+#set text(lang: "pt")
+
+#set par(
+  justify: true,
+  justification-limits: (
+    tracking: (min: -0.012em, max: 0.012em),
+    spacing: (min: 75%, max: 120%),
+  )
+)
+
+#title[Um Estudo sobre Higiene Manual]
+
+= Introdução
+
+A higiene manual é uma prática essencial na saúde (Silva, 2020). O uso de técnicas adequadas reduz o risco de lesões ocupacionais.
+
+= Métodos
+
+Este estudo utilizou uma abordagem qualitativa com amostra de 50 profissionais (Santos, 2019).
+
+= Resultados
+
+Os resultados indicam uma correlação significativa entre treinamento e prática adequada.
+
+= Conclusão
+
+Verificou-se a importância da capacitação contínua. As recomendações incluem treinamento regular e supervisão periódica.
+
+#bibliography("referencias.bib")
 ```
 
 ## Workflows
@@ -146,6 +208,10 @@ text(...)[(#numbering(...))]
 - Forgetting to include the namespace when accessing imported variables/functions (e.g., use `color.hsl` instead of just `hsl`).
 - Using LaTeX syntax (do **NOT** use `\begin{...}`, `\section`, or other LaTeX commands).
 - Hallucinating environments (e.g., `tabular` does not exist; use `table`).
+- **Using English language settings (`lang: "en"`) for Portuguese text** — always use `#set text(lang: "pt")` for proper hyphenation and accent handling.
+- **Mismatched quotation marks** — Portuguese uses guillemets (« and »), not double quotes (").
+- **Using decimal point instead of comma** — Portuguese number formatting requires a decimal comma (`,`), e.g., `3,14` instead of `3.14`.
+- **Incorrect accent handling** — type accented characters (á, é, í, ó, ú, ç, ã, õ) directly in UTF-8; do not use LaTeX-style `\'e` or `\c{c}` macros.
 
 ## Advanced features
 

@@ -1,6 +1,6 @@
 ---
 name: touying-author
-description: Author, refactor, and troubleshoot Typst slide decks built with Touying
+description: Author, refactor, and troubleshoot Typst slide decks built with Touying. Focus on academic presentations, Portuguese language support, and bibliography integration.
 ---
 
 # Touying Author
@@ -12,6 +12,20 @@ Guide Typst presentation authoring with Touying, emphasizing clean structure, re
 - Keep configuration centralized; include slide content from separate files.
 - Use headings to create slides; use `#slide` for custom layouts or animations.
 - Start from `examples/simple.typ` for a minimal deck, or `examples/default.typ` for the bare theme.
+- For Portuguese academic presentations, consider themes like `university`, `metropolis`, or `simple` with `config-info` for translated titles.
+
+## Apresentações Acadêmicas em Português
+- Use Touying for conference talks and defense presentations in Portuguese.
+- Theme selection: `university` for formal university contexts, `metropolis` for modern conferences, `simple` for minimalist presentations.
+- Configure title, author, and date in Portuguese using `config-info(título: "....", autor: "....", data: "....")`.
+- Example:
+  ```typst
+  #config-info(
+    título: "Minha apresentação",
+    autor: "Nome do Autor",
+    data: "Outubro 2026",
+  )
+  ```
 
 Snippet from `examples/simple.typ`:
 
@@ -60,9 +74,9 @@ Snippet from `examples/simple.typ`:
 
 - Slides: `touying-slides`, `slide`, `touying-slide`, `touying-slide-wrapper`, `empty-slide`
 - Dynamics: `pause`, `meanwhile`, `uncover`, `only`, `effect`, `alternatives`, `alternatives-match`, `alternatives-fn`, `alternatives-cases`
-- Config: `config-common`, `config-page`, `config-info`, `config-colors`, `config-methods`, `config-store`, `default-config`, `touying-set-config`, `appendix`
+- Config: `config-common`, `config-page`, `config-info`, `config-colors`, `config-methods`, `config-store`, `default-config`, `touying-set-config`, `appendix` — **`config-info`** for title/author/date, **`config-store`** for bibliography data
 - Utilities: `utils.*` (fit-to-height, fit-to-width, cover helpers, progress, heading helpers)
-- Components: `components.side-by-side`, `components.adaptive-columns`, `components.progressive-outline`, `components.custom-progressive-outline`
+- Components: `components.side-by-side`, `components.adaptive-columns` — **use with `outline(...)` for TOC slides**, `components.progressive-outline`, `components.custom-progressive-outline`
 - Integrations: `touying-reducer`, `touying-equation`, `touying-mitex`, `speaker-note`, `pdfpc.*`
 - Recall: `touying-recall`, `touying-fn-wrapper`
 
@@ -92,17 +106,59 @@ Snippet from `examples/default.typ`:
 - For math animations, use `pause`/`meanwhile` inside `$ ... $`; use `touying-equation` when you need the helper for inline equation text (you can also use `#pause` or `#pause;`).
 - See `examples/example.typ` for simple/complex/callback animations and equation animations.
 
-Snippet from `examples/simple.typ`:
+## Referências e Bibliografia em Slides
+- Add bibliography slides with Touying components: use `config-store` to manage reference data and `components.adaptive-columns` for reference lists.
+- Citation revelation: use `#uncover` to gradually reveal citations, `#only` to show specific citations on each slide, and `#alternatives` to present multiple references options.
+- Managing references across slides: define reference data once in `config-store` or a local variable, then reuse `#uncover("1")`, `#uncover("2-3")`, etc. to control when each reference appears.
+- Example pattern:
+  ```typst
+  #let refs = [
+    "Author, Title 1",
+    "Author, Title 2",
+    "Author, Title 3",
+  ]
+  
+  #uncover("1")[Reference #1: refs[0]]
+  #uncover("2")[Reference #2: refs[1]]
+  #only("3")[Reference #3: refs[2]]
+  ```
 
-```typst
-== Dynamic slide
-
-Did you know that...
-
-#pause
-
-...you can see the current section at the top of the slide?
-```
+## Example: Portuguese Academic Presentation
+- A complete minimal presentation in Portuguese using Touying themes.
+- Theme: `university` for formal academic contexts, with `config-info` for Portuguese title/author/date.
+- Full example:
+  ```typst
+  #import "@preview/touying:0.6.1": *
+  #import themes.university: *
+  
+  #config-info(
+    título: "Resultados da Pesquisa em Biologia",
+    autor: "Maria Silva",
+    data: "5 de novembro de 2026",
+  )
+  
+  #show: university-theme.with(
+    aspect-ratio: "16-9",
+    config-colors(primary: blue),
+  )
+  
+  = Introdução
+  
+  Alguns resultados iniciais...
+  
+  = Métodos
+  
+  Descrevendo o método utilizado...
+  
+  = Resultados
+  
+  #uncover("1")[Primeiro resultado]
+  #uncover("2")[Segundo resultado]
+  
+= Conclusão
+  
+  Considerações finais.
+  ```
 
 Snippet from `examples/example.typ`:
 ```typst
